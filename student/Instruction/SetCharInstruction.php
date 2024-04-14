@@ -2,14 +2,37 @@
 
 namespace IPP\Student\Instruction;
 
-use IPP\Core\Exception\NotImplementedException;
+use IPP\Student\ArgType;
+use IPP\Student\DataType;
 use IPP\Student\Environment;
+use IPP\Student\Exception\StringOperationError;
+use IPP\Student\Exception\OperandTypeError;
 use IPP\Student\Instruction;
 
 class SetCharInstruction extends Instruction
 {
+    protected array $expectedArgs = [ArgType::VAR, ArgType::SYMB, ArgType::SYMB];
+
     public function execute(Environment $env): void
     {
-        throw new NotImplementedException;
+        $destArg = $this->args[0];
+
+        $str = $env->resolve($this->args[0]);
+        $index = $env->resolve($this->args[1]);
+        $replace = $env->resolve($this->args[2]);
+
+        $strValue = $str->getValue();
+        $indexValue = $index->getValue();
+        $replaceValue = $replace->getValue();
+
+        if ($index->getType() !== DataType::INT || $replace->getType() !== DataType::STRING) {
+            throw new OperandTypeError($this);
+        }
+        if ($indexValue < 0 || $indexValue >= strlen($strValue)) {
+            throw new StringOperationError($this, "String index out of range");
+        }
+
+        $strValue[$indexValue] = $replaceValue;
+        $env->set($destArg->getName(), $destArg->getFrame(), DataType::STRING, $strValue);
     }
 }
