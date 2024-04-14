@@ -2,20 +2,22 @@
 
 namespace IPP\Student\Instruction;
 
+use IPP\Student\ArgType;
 use IPP\Student\Environment;
 use IPP\Student\Instruction;
-use IPP\Student\VarType;
 
 class MoveInstruction extends Instruction
 {
+    protected array $expectedArgs = [ArgType::VAR, ArgType::SYMB];
+
     public function execute(Environment $env): void
     {
-        $src = $this->args[1];
-        $dest = $this->args[0];
+        $srcArg = $this->args[1];
+        $destArg = $this->args[0];
 
-        $type = VarType::from($src->getType()->value);
-        $value = $env->resolve($src);
+        $src = $env->resolve($srcArg);
+        $dest = $env->resolve($destArg);
 
-        $env->set($dest->getName(), $dest->getFrame(), $type, $value);
+        $env->set($destArg->getName(), $destArg->getFrame(), $src->getType(), $src->getValue());
     }
 }

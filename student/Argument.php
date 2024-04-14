@@ -11,15 +11,25 @@ class Argument
     private ArgType $type;
     private string $frame;
     private string $name;
+    private Symbol $constant;
 
     function __construct(string $value, string $type)
     {
         $this->value = $value;
 
-        try {
-            $this->type = ArgType::from($type);
-        } catch (ValueError $e) {
-            throw new NotImplementedException("Unsupported argument type: " . $type);
+        $constType = DataType::tryFrom($type);
+
+        if ($constType !== null) {
+            // The argument is a constant
+            $this->type = ArgType::CONST;
+            $this->constant = new Symbol($constType, $value);
+        } else {
+            // The argument is a label, type or variable
+            try {
+                $this->type = ArgType::from($type);
+            } catch (ValueError $e) {
+                throw new NotImplementedException("Unsupported argument type: " . $type);
+            }
         }
 
         if ($this->type == ArgType::VAR) {
@@ -27,6 +37,11 @@ class Argument
             $this->frame = $split[0];
             $this->name = $split[1];
         }
+    }
+
+    public function getConstantSymbol(): Symbol
+    {
+        return $this->constant;
     }
 
     public function getValue(): string

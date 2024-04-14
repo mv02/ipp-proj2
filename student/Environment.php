@@ -74,23 +74,31 @@ class Environment
         $frame->set($name);
     }
 
-    public function resolve(Argument $arg): string
+    public function resolve(Argument $arg): Symbol
     {
-        if ($arg->getType() == ArgType::VAR) {
-            $name = $arg->getName();
+        $type = $arg->getType();
+
+        if ($type === ArgType::VAR) {
+            // The argument is a variable -- find its value in memory
             $frame = $this->frame($arg->getFrame());
 
             if ($frame == null) {
                 throw new FrameAccessError();
             }
 
-            return $frame->get($name)->getValue();
+            return $frame->get($arg->getName());
         }
 
-        return $arg->getValue();
+        if ($type === ArgType::LABEL || $type === ArgType::TYPE) {
+            // The argument is a label or type -- return its value
+            return $arg->getValue();
+        }
+
+        // The argument is a constant -- return the symbol object
+        return $arg->getConstantSymbol();
     }
 
-    public function set(string $name, string $frameType, VarType $type, mixed $value): void
+    public function set(string $name, string $frameType, DataType $type, mixed $value): void
     {
         $frame = $this->frame($frameType);
 
@@ -98,7 +106,6 @@ class Environment
             // The frame is undefined
             throw new FrameAccessError();
         }
-
         if ($frame->get($name) == null) {
             // The item was not found
             throw new VariableAccessError("Variable " . $name . " does not exist in " . $frameType);
@@ -107,20 +114,26 @@ class Environment
         $frame->set($name, $type, $value);
     }
 
-    public function read(VarType $type): mixed
+    public function read(DataType $type): mixed
     {
         switch ($type) {
-            case VarType::INT:
+            case DataType::INT:
                 return $this->reader->readInt();
-            case VarType::BOOL:
+            case DataType::BOOL:
                 return $this->reader->readBool();
-            case VarType::STRING:
+            case DataType::STRING:
                 return $this->reader->readString();
         }
     }
 
-    public function writeString(string $value): void
+    public function write(Symbol $symb): void
     {
-        $this->writer->writeString($value);
+        $type = $symb->getType();
+
+        if ($type === DataType::NIL) {
+            $this->writer->writeString("nil@nil");
+        } else {
+            $this->writer->writeString($symb->getValue());
+        }
     }
 }

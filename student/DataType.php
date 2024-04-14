@@ -2,7 +2,8 @@
 
 namespace IPP\Student;
 
-enum VarType: string {
+enum DataType: string
+{
     case INT = "int";
     case BOOL = "bool";
     case STRING = "string";
