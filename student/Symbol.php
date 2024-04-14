@@ -16,7 +16,7 @@ class Symbol
                 $this->value = (int) $value;
                 break;
             case DataType::BOOL:
-                $this->value = (bool) $value;
+                $this->value = $value == "true";
                 break;
             case DataType::STRING:
                 $this->value = (string) $value;
