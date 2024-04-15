@@ -16,11 +16,13 @@ class Environment
     private Frame $gf;
     private ?Frame $tf = null;
     private FrameStack $frameStack;
+    private CallStack $callStack;
 
     public function __construct(private OutputWriter $writer, private InputReader $reader)
     {
         $this->gf = new Frame();
         $this->frameStack = new FrameStack();
+        $this->callStack = new CallStack();
     }
 
     private function frame(string $type): ?Frame
@@ -165,11 +167,22 @@ class Environment
         $this->jumped = true;
     }
 
+    public function jumpToPosition(int $position): void
+    {
+        $this->ip = $position;
+        $this->jumped = true;
+    }
+
     public function incrementIp(): void
     {
         if (!$this->jumped) {
             $this->ip++;
         }
         $this->jumped = false;
+    }
+
+    public function getCallStack(): CallStack
+    {
+        return $this->callStack;
     }
 }
