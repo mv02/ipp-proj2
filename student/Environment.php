@@ -10,6 +10,8 @@ use IPP\Student\Exception\VariableAccessError;
 
 class Environment
 {
+    private int $ip = 0;
+    private bool $jumped = false;
     private array $labels = [];
     private Frame $gf;
     private ?Frame $tf = null;
@@ -137,5 +139,24 @@ class Environment
         } else {
             $this->writer->writeString($symb->getValue());
         }
+    }
+
+    public function getIp(): int
+    {
+        return $this->ip;
+    }
+
+    public function jumpTo(int $position): void
+    {
+        $this->ip = $position;
+        $this->jumped = true;
+    }
+
+    public function incrementIp(): void
+    {
+        if (!$this->jumped) {
+            $this->ip++;
+        }
+        $this->jumped = false;
     }
 }

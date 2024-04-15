@@ -7,7 +7,6 @@ use IPP\Student\Exception\InvalidSourceStructure;
 
 class Interpreter extends AbstractInterpreter
 {
-    private int $ip = 0;                // Instruction pointer
     private array $instructions = [];   // List of instructions
     private Environment $env;
 
@@ -51,16 +50,18 @@ class Interpreter extends AbstractInterpreter
                 throw new InvalidSourceStructure("Duplicit instruction order");
             }
 
-            $this->instructions[$order] = $instruction;
+            array_push($this->instructions, $instruction);
         }
 
-        $instructionKeys = array_keys($this->instructions);
+        $instructionCount = count($this->instructions);
 
-        // Execute instruction using the instruction pointer
-        while ($this->ip < count($this->instructions)) {
-            $key = $instructionKeys[$this->ip];
-            $this->instructions[$key]->execute($this->env, $this->stdout);
-            $this->ip++;
+        // Sort instructions by order
+        usort($this->instructions, fn($a, $b) => $a->getOrder() > $b->getOrder());
+
+        // Execute instructions using the instruction pointer
+        while (($ip = $this->env->getIp()) < $instructionCount) {
+            $this->instructions[$ip]->execute($this->env, $this->stdout);
+            $this->env->incrementIp();
         }
 
         return 0;
