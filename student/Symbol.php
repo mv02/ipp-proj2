@@ -31,6 +31,22 @@ class Symbol
         return $this->type;
     }
 
+    public function getTypeString(): string
+    {
+        switch ($this->type) {
+            case DataType::INT:
+                return "int";
+            case DataType::BOOL:
+                return "bool";
+            case DataType::STRING:
+                return "string";
+            case DataType::NIL:
+                return "nil";
+            default:
+                return "";
+        }
+    }
+
     public function getValue(): mixed
     {
         switch ($this->type) {
