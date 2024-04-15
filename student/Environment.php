@@ -141,7 +141,15 @@ class Environment
         } elseif ($type === DataType::NIL) {
             $this->writer->writeString("");
         } else {
-            $this->writer->writeString($symb->getValue());
+            $str = $symb->getValue();
+
+            // Escape sequences
+            $str = preg_replace_callback("/\\\\[0-9]{3}/", function($matches) {
+                $ord = (int) substr($matches[0], 1, 3);
+                return mb_chr($ord);
+            }, $str);
+
+            $this->writer->writeString($str);
         }
     }
 
