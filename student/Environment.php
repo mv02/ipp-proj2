@@ -132,7 +132,7 @@ class Environment
         if ($type === DataType::BOOL) {
             $this->writer->writeString($symb->getValue() ? "true" : "false");
         } elseif ($type === DataType::NIL) {
-            $this->writer->writeString("nil@nil");
+            $this->writer->writeString("");
         } else {
             $this->writer->writeString($symb->getValue());
         }
