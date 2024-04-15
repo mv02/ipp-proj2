@@ -155,9 +155,13 @@ class Environment
         $this->ip = $ip;
     }
 
-    public function jumpTo(int $position): void
+    public function jumpTo(string $label): void
     {
-        $this->ip = $position;
+        if (!array_key_exists($label, $this->labels)) {
+            throw new SemanticError(null, "Label does not exist");
+        }
+
+        $this->ip = $this->labels[$label];
         $this->jumped = true;
     }
 
