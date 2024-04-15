@@ -19,7 +19,10 @@ class GtInstruction extends Instruction
         $a = $env->resolve($this->args[1]);
         $b = $env->resolve($this->args[2]);
 
-        if ($a->getType() !== $b->getType()) {
+        $aType = $a->getType();
+        $bType = $b->getType();
+
+        if ($aType !== $bType || $aType === DataType::NIL || $bType === DataType::NIL) {
             throw new OperandTypeError($this);
         }
 
