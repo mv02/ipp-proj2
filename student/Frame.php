@@ -11,7 +11,7 @@ class Frame
         return $this->values[$key] ?? null;
     }
 
-    public function set(string $key, DataType $type = DataType::NIL, mixed $value = null): void
+    public function set(string $key, DataType $type = DataType::NONE, mixed $value = null): void
     {
         if (!array_key_exists($key, $this->values)) {
             $this->values[$key] = new Variable();
@@ -19,5 +19,10 @@ class Frame
 
         $this->values[$key]->setType($type);
         $this->values[$key]->setValue($value);
+    }
+
+    public function has(string $key): bool
+    {
+        return array_key_exists($key, $this->values);
     }
 }

@@ -27,18 +27,29 @@ class Environment
         $this->dataStack = new DataStack();
     }
 
-    private function frame(string $type): ?Frame
+    private function getFrame(string $type): ?Frame
     {
+        $frame = null;
+
         switch ($type) {
             case "GF":
-                return $this->gf;
+                $frame = $this->gf;
+                break;
             case "TF":
-                return $this->tf;
+                $frame = $this->tf;
+                break;
             case "LF":
-                return $this->frameStack->top();
-            default:
-                return null;
+                if (!$this->frameStack->isEmpty()) {
+                    $frame = $this->frameStack->top();
+                }
+                break;
         }
+
+        if ($frame === null) {
+            throw new FrameAccessError($type . " is undefined");
+        }
+
+        return $frame;
     }
 
     public function createFrame(): void
@@ -67,14 +78,11 @@ class Environment
 
     public function define(string $name, string $frameType): void
     {
-        $frame = $this->frame($frameType);
+        $frame = $this->getFrame($frameType);
 
-        if ($frame == null) {
-            throw new FrameAccessError();
-        }
-
-        if ($frame->get($name) != null) {
-            throw new SemanticError(null, "Variable already defined");
+        if ($frame->has($name)) {
+            // The variable already exists
+            throw new SemanticError(null, "Variable " . $name . " already exists in " . $frameType);
         }
 
         $frame->set($name);
@@ -82,17 +90,18 @@ class Environment
 
     public function resolve(Argument $arg): Symbol
     {
-        $type = $arg->getType();
-
-        if ($type === ArgType::VAR) {
+        if ($arg->getType() === ArgType::VAR) {
             // The argument is a variable -- find its value in memory
-            $frame = $this->frame($arg->getFrame());
+            $name = $arg->getName();
+            $frameType = $arg->getFrame();
 
-            if ($frame == null) {
-                throw new FrameAccessError();
+            $frame = $this->getFrame($frameType);
+            if (!$frame->has($name)) {
+                // The variable does not exist
+                throw new VariableAccessError("Variable " . $name . " does not exist in " . $frameType);
             }
 
-            return $frame->get($arg->getName());
+            return $frame->get($name);
         }
 
         // The argument is a constant, label or type -- return the symbol object
@@ -101,14 +110,10 @@ class Environment
 
     public function set(string $name, string $frameType, DataType $type, mixed $value): void
     {
-        $frame = $this->frame($frameType);
+        $frame = $this->getFrame($frameType);
 
-        if ($frame == null) {
-            // The frame is undefined
-            throw new FrameAccessError();
-        }
-        if ($frame->get($name) == null) {
-            // The item was not found
+        if (!$frame->has($name)) {
+            // The variable does not exist
             throw new VariableAccessError("Variable " . $name . " does not exist in " . $frameType);
         }
 

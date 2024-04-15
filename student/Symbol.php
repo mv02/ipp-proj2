@@ -7,7 +7,7 @@ class Symbol
     protected DataType $type;
     protected mixed $value;
 
-    public function __construct(DataType $type = DataType::NIL, mixed $value = null)
+    public function __construct(DataType $type = DataType::NONE, mixed $value = null)
     {
         $this->type = $type;
 
@@ -22,7 +22,7 @@ class Symbol
                 $this->value = (string) $value;
                 break;
             default:
-                $this->value = $value;
+                $this->value = null;
         }
     }
 
