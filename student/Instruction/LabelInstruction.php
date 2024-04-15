@@ -21,6 +21,6 @@ class LabelInstruction extends Instruction
 
         $label = $env->resolve($this->args[0]);
 
-        $env->defineLabel($label->getValue(), $env->getIp());
+        $env->defineLabel($label->getValue(), $env->getIp() + 1);
     }
 }
