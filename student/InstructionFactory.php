@@ -22,6 +22,10 @@ class InstructionFactory
                 return new Instruction\PopFrameInstruction($node);
             case "DEFVAR":
                 return new Instruction\DefVarInstruction($node);
+            case "CALL":
+                return new Instruction\CallInstruction($node);
+            case "RETURN":
+                return new Instruction\ReturnInstruction($node);
             case "PUSHS":
                 return new Instruction\PushSInstruction($node);
             case "POPS":
