@@ -86,7 +86,7 @@ abstract class Instruction
             }
 
             // No match found
-            throw new SemanticError($this, "Invalid argument, expected " . $expected->name);
+            throw new InvalidSourceStructure("Invalid argument, expected " . $expected->name);
         }
     }
 
