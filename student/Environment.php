@@ -17,12 +17,14 @@ class Environment
     private ?Frame $tf = null;
     private FrameStack $frameStack;
     private CallStack $callStack;
+    private DataStack $dataStack;
 
     public function __construct(private OutputWriter $writer, private InputReader $reader)
     {
         $this->gf = new Frame();
         $this->frameStack = new FrameStack();
         $this->callStack = new CallStack();
+        $this->dataStack = new DataStack();
     }
 
     private function frame(string $type): ?Frame
@@ -184,5 +186,10 @@ class Environment
     public function getCallStack(): CallStack
     {
         return $this->callStack;
+    }
+
+    public function getDataStack(): DataStack
+    {
+        return $this->dataStack;
     }
 }
