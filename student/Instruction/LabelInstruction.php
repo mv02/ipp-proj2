@@ -2,14 +2,25 @@
 
 namespace IPP\Student\Instruction;
 
-use IPP\Core\Exception\NotImplementedException;
+use IPP\Student\ArgType;
 use IPP\Student\Environment;
 use IPP\Student\Instruction;
 
 class LabelInstruction extends Instruction
 {
+    protected array $expectedArgs = [ArgType::LABEL];
+    private bool $executed = false;
+
     public function execute(Environment $env): void
     {
-        throw new NotImplementedException;
+        if ($this->executed) {
+            return;
+        }
+
+        $this->executed = true;
+
+        $label = $env->resolve($this->args[0]);
+
+        $env->defineLabel($label->getValue(), $env->getIp());
     }
 }

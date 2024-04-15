@@ -136,9 +136,23 @@ class Environment
         }
     }
 
+    public function defineLabel(string $label, int $position): void
+    {
+        if (array_key_exists($label, $this->labels)) {
+            throw new SemanticError(null, "Label already defined");
+        }
+
+        $this->labels[$label] = $position;
+    }
+
     public function getIp(): int
     {
         return $this->ip;
+    }
+
+    public function setIp(int $ip): void
+    {
+        $this->ip = $ip;
     }
 
     public function jumpTo(int $position): void

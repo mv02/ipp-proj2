@@ -58,6 +58,17 @@ class Interpreter extends AbstractInterpreter
         // Sort instructions by order
         usort($this->instructions, fn($a, $b) => $a->getOrder() > $b->getOrder());
 
+        // Execute LABEL instructions
+        while (($ip = $this->env->getIp()) < $instructionCount) {
+            $instruction = $this->instructions[$ip];
+            if ($instruction->getOpcode() === "LABEL") {
+                $instruction->execute($this->env);
+            }
+            $this->env->incrementIp();
+        }
+
+        $this->env->setIp(0);
+
         // Execute instructions using the instruction pointer
         while (($ip = $this->env->getIp()) < $instructionCount) {
             $this->instructions[$ip]->execute($this->env, $this->stdout);
