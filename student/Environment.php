@@ -70,7 +70,7 @@ class Environment
         }
 
         if ($frame->get($name) != null) {
-            throw new SemanticError("Variable already defined");
+            throw new SemanticError(null, "Variable already defined");
         }
 
         $frame->set($name);
