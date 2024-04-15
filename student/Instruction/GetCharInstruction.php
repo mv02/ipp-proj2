@@ -20,7 +20,7 @@ class GetCharInstruction extends Instruction
         $str = $env->resolve($this->args[1]);
         $index = $env->resolve($this->args[2]);
 
-        $strValue = $index->getValue();
+        $strValue = $str->getValue();
         $indexValue = $index->getValue();
 
         if ($str->getType() !== DataType::STRING || $index->getType() !== DataType::INT) {
