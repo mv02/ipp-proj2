@@ -2,14 +2,14 @@
 
 namespace IPP\Student;
 
-use IPP\Core\Exception\NotImplementedException;
+use IPP\Student\Exception\InvalidSourceStructure;
 use IPP\Student\Instruction;
 
 class InstructionFactory
 {
     public static function create(\DOMNode $node): Instruction
     {
-        $opcode = $node->attributes["opcode"]->nodeValue;
+        $opcode = strtoupper($node->attributes["opcode"]->nodeValue);
 
         switch ($opcode) {
             case "MOVE":
@@ -83,7 +83,7 @@ class InstructionFactory
             case "BREAK":
                 return new Instruction\BreakInstruction($node);
             default:
-                throw new NotImplementedException("Unsupported opcode");
+                throw new InvalidSourceStructure("Unknown opcode");
         }
     }
 }

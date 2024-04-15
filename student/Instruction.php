@@ -17,7 +17,7 @@ abstract class Instruction
     public function __construct(\DOMNode $node)
     {
         $this->order = $node->attributes["order"]->nodeValue;
-        $this->opcode = $node->attributes["opcode"]->nodeValue;
+        $this->opcode = strtoupper($node->attributes["opcode"]->nodeValue);
         $this->parseArgs($node);
         $this->validateArgs();
     }
@@ -69,7 +69,7 @@ abstract class Instruction
     {
         if (count($this->args) != count($this->expectedArgs)) {
             // Different argument count than expected
-            throw new SemanticError($this, "Bad argument count, expected " . count($this->expectedArgs) . ", got " . count($this->args));
+            throw new InvalidSourceStructure("Bad argument count, expected " . count($this->expectedArgs) . ", got " . count($this->args));
         }
 
         foreach ($this->args as $i => $arg) {
