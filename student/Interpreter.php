@@ -15,8 +15,22 @@ class Interpreter extends AbstractInterpreter
         $this->env = new Environment($this->stdout, $this->input);
 
         $dom = $this->source->getDOMDocument();
+        $program = $dom->getRootNode()->firstChild;
 
-        foreach ($dom->getRootNode()->firstChild->childNodes as $node) {
+        if ($program->nodeName !== "program") {
+            // Not a program element
+            throw new InvalidSourceStructure("Unexpected element");
+        }
+        if ($program->attributes["language"] === null) {
+            // The element has no "language" attribute
+            throw new InvalidSourceStructure("Missing language attribute");
+        }
+        if ($program->attributes["language"]->nodeValue !== "IPPcode24") {
+            // The "language" attribute is invalid
+            throw new InvalidSourceStructure("Invalid language");
+        }
+
+        foreach ($program->childNodes as $node) {
             $name = $node->nodeName;
 
             if ($name == "#text") {

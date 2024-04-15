@@ -2,7 +2,7 @@
 
 namespace IPP\Student;
 
-use IPP\Core\Exception\NotImplementedException;
+use IPP\Student\Exception\InvalidSourceStructure;
 use ValueError;
 
 class Argument
@@ -15,28 +15,32 @@ class Argument
 
     function __construct(string $value, string $type)
     {
-        $this->value = $value;
+        $this->value = trim($value);
 
         $constType = DataType::tryFrom($type);
 
         if ($constType !== null) {
             // The argument is a constant
             $this->type = ArgType::CONST;
-            $this->constant = new Symbol($constType, $value);
+            $this->constant = new Symbol($constType, $this->value);
         } else {
             // The argument is a label, type or variable
             try {
                 $this->type = ArgType::from($type);
             } catch (ValueError $e) {
-                throw new NotImplementedException("Unsupported argument type: " . $type);
+                throw new InvalidSourceStructure("Unknown argument type: " . $type);
             }
-            $this->constant = new Symbol(DataType::STRING, $value);
+            $this->constant = new Symbol(DataType::STRING, $this->value);
         }
 
         if ($this->type == ArgType::VAR) {
             $split = explode("@", $this->value);
             $this->frame = $split[0];
             $this->name = $split[1];
+
+            if (!in_array($this->frame, ["GF", "LF", "TF"])) {
+                throw new InvalidSourceStructure("Invalid frame: " . $this->frame);
+            }
         }
     }
 
