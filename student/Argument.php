@@ -30,6 +30,7 @@ class Argument
             } catch (ValueError $e) {
                 throw new NotImplementedException("Unsupported argument type: " . $type);
             }
+            $this->constant = new Symbol(DataType::STRING, $value);
         }
 
         if ($this->type == ArgType::VAR) {

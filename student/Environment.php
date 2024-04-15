@@ -91,12 +91,7 @@ class Environment
             return $frame->get($arg->getName());
         }
 
-        if ($type === ArgType::LABEL || $type === ArgType::TYPE) {
-            // The argument is a label or type -- return its value
-            return $arg->getValue();
-        }
-
-        // The argument is a constant -- return the symbol object
+        // The argument is a constant, label or type -- return the symbol object
         return $arg->getConstantSymbol();
     }
 
