@@ -17,6 +17,6 @@ class TypeInstruction extends Instruction
 
         $symbol = $env->resolve($this->args[1]);
 
-        $env->set($destArg->getName(), $destArg->getFrame(), DataType::STRING, $symbol->getTypeString());
+        $env->set($destArg->getName(), $destArg->getFrame(), DataType::STRING, $symbol->getType()->value);
     }
 }

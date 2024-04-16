@@ -43,27 +43,6 @@ class Symbol
     }
 
     /**
-     * Get symbol data type in string representation.
-     *
-     * @return string
-     */
-    public function getTypeString(): string
-    {
-        switch ($this->type) {
-            case DataType::INT:
-                return "int";
-            case DataType::BOOL:
-                return "bool";
-            case DataType::STRING:
-                return "string";
-            case DataType::NIL:
-                return "nil";
-            default:
-                return "";
-        }
-    }
-
-    /**
      * Get symbol value.
      *
      * @return int|bool|string|null

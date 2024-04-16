@@ -8,5 +8,5 @@ enum DataType: string
     case BOOL = "bool";
     case STRING = "string";
     case NIL = "nil";
-    case NONE = "none";
+    case NONE = "";
 }
