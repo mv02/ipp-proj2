@@ -4,7 +4,7 @@ namespace IPP\Student;
 
 class Frame
 {
-    /** @var Variable[] */
+    /** @var array<string, Variable> */
     private array $values = [];
 
     /**
