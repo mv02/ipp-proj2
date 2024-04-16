@@ -3,7 +3,6 @@
 namespace IPP\Student;
 
 use IPP\Student\Exception\InvalidSourceStructure;
-use IPP\Student\Exception\SemanticError;
 
 abstract class Instruction
 {
