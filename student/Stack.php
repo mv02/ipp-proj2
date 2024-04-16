@@ -2,33 +2,36 @@
 
 namespace IPP\Student;
 
-class CallStack
+/**
+ * @template T of mixed
+ */
+class Stack
 {
-    /** @var int[] */
+    /** @var T[] */
     private array $stack = [];
     /** @var int */
     private int $size = 0;
 
     /**
-     * @param int $position
+     * @param T $item
      */
-    public function push(int $position): void
+    public function push($item): void
     {
-        $this->stack[$this->size++] = $position;
+        $this->stack[$this->size++] = $item;
     }
 
     /**
-     * @return int
+     * @return T
      */
-    public function top(): int
+    public function top(): mixed
     {
         return $this->stack[$this->size - 1];
     }
 
     /**
-     * @return int
+     * @return T
      */
-    public function pop(): int
+    public function pop(): mixed
     {
         return $this->stack[--$this->size];
     }
@@ -38,6 +41,6 @@ class CallStack
      */
     public function isEmpty(): bool
     {
-        return $this->size == 0;
+        return $this->size === 0;
     }
 }

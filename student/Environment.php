@@ -20,12 +20,12 @@ class Environment
     private Frame $gf;
     /** @var Frame|null The temporary frame. */
     private ?Frame $tf = null;
-    /** @var FrameStack */
-    private FrameStack $frameStack;
-    /** @var CallStack */
-    private CallStack $callStack;
-    /** @var DataStack */
-    private DataStack $dataStack;
+    /** @var Stack<Frame> */
+    private Stack $frameStack;
+    /** @var Stack<int> */
+    private Stack $callStack;
+    /** @var Stack<Symbol> */
+    private Stack $dataStack;
 
     /**
      * @param OutputWriter $writer Writer to use for writing output.
@@ -34,9 +34,9 @@ class Environment
     public function __construct(private OutputWriter $writer, private InputReader $reader)
     {
         $this->gf = new Frame();
-        $this->frameStack = new FrameStack();
-        $this->callStack = new CallStack();
-        $this->dataStack = new DataStack();
+        $this->frameStack = new Stack();
+        $this->callStack = new Stack();
+        $this->dataStack = new Stack();
     }
 
     /**
@@ -311,9 +311,9 @@ class Environment
     /**
      * Get the call stack.
      *
-     * @return CallStack
+     * @return Stack<int>
      */
-    public function getCallStack(): CallStack
+    public function getCallStack(): Stack
     {
         return $this->callStack;
     }
@@ -321,9 +321,9 @@ class Environment
     /**
      * Get the data stack.
      *
-     * @return DataStack
+     * @return Stack<Symbol>
      */
-    public function getDataStack(): DataStack
+    public function getDataStack(): Stack
     {
         return $this->dataStack;
     }
