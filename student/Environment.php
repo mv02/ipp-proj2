@@ -219,7 +219,7 @@ class Environment
         } elseif ($type === DataType::NIL) {
             $this->writer->writeString("");
         } else {
-            $str = $symb->getValue();
+            $str = (string) $symb->getValue();
 
             // Escape sequences
             $str = preg_replace_callback("/\\\\[0-9]{3}/", function($matches) {
@@ -227,7 +227,7 @@ class Environment
                 return mb_chr($ord);
             }, $str);
 
-            $this->writer->writeString($str);
+            $this->writer->writeString((string) $str);
         }
     }
 

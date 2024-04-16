@@ -22,6 +22,6 @@ class StrLenInstruction extends Instruction
             throw new OperandTypeError($this);
         }
 
-        $env->set($destArg->getName(), $destArg->getFrame(), DataType::INT, strlen($a->getValue()));
+        $env->set($destArg->getName(), $destArg->getFrame(), DataType::INT, strlen((string) $a->getValue()));
     }
 }

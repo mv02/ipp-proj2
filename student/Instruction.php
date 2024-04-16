@@ -44,8 +44,8 @@ abstract class Instruction
     private function parseArgs(\DOMNode $node): void
     {
         foreach ($node->childNodes as $attr) {
-            $name = $attr->nodeName;
-            $value = $attr->nodeValue;
+            $name = (string) $attr->nodeName;
+            $value = (string) $attr->nodeValue;
 
             if ($name === "#text") {
                 // Skip text nodes

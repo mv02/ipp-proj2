@@ -21,9 +21,9 @@ class SetCharInstruction extends Instruction
         $index = $env->resolve($this->args[1]);
         $replace = $env->resolve($this->args[2]);
 
-        $strValue = $str->getValue();
-        $indexValue = $index->getValue();
-        $replaceValue = $replace->getValue();
+        $strValue = (string) $str->getValue();
+        $indexValue = (int) $index->getValue();
+        $replaceValue = (string) $replace->getValue();
 
         if ($index->getType() !== DataType::INT || $replace->getType() !== DataType::STRING) {
             throw new OperandTypeError($this);

@@ -7,7 +7,9 @@ use IPP\Student\Exception\InvalidSourceStructure;
 
 class Interpreter extends AbstractInterpreter
 {
-    private array $instructions = [];   // List of instructions
+    /** @var Instruction[] List of instructions. */
+    private array $instructions = [];
+    /** @var Environment Current runtime environment. */
     private Environment $env;
 
     public function execute(): int
@@ -70,7 +72,7 @@ class Interpreter extends AbstractInterpreter
         $instructionCount = count($this->instructions);
 
         // Sort instructions by order
-        usort($this->instructions, fn($a, $b) => $a->getOrder() > $b->getOrder());
+        usort($this->instructions, fn($a, $b) => $a->getOrder() - $b->getOrder());
 
         // Execute LABEL instructions
         while (($ip = $this->env->getIp()) < $instructionCount) {
@@ -85,7 +87,7 @@ class Interpreter extends AbstractInterpreter
 
         // Execute instructions using the instruction pointer
         while (($ip = $this->env->getIp()) < $instructionCount) {
-            $this->instructions[$ip]->execute($this->env, $this->stdout);
+            $this->instructions[$ip]->execute($this->env);
             $this->env->incrementIp();
         }
 

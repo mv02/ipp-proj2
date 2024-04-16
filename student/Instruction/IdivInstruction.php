@@ -27,6 +27,6 @@ class IdivInstruction extends Instruction
             throw new OperandValueError($this, "Division by zero");
         }
 
-        $env->set($destArg->getName(), $destArg->getFrame(), DataType::INT, $a->getValue() / $b->getValue());
+        $env->set($destArg->getName(), $destArg->getFrame(), DataType::INT, (int) $a->getValue() / (int) $b->getValue());
     }
 }

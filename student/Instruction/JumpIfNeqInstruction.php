@@ -26,7 +26,7 @@ class JumpIfNeqInstruction extends Instruction
         }
 
         if ($a->getValue() !== $b->getValue()) {
-            $env->jumpTo($label->getValue());
+            $env->jumpTo((string) $label->getValue());
         }
     }
 }

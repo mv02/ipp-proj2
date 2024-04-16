@@ -15,6 +15,6 @@ class CallInstruction extends Instruction
         $label = $env->resolve($this->args[0]);
 
         $env->getCallStack()->push($env->getIp() + 1);
-        $env->jumpTo($label->getValue());
+        $env->jumpTo((string) $label->getValue());
     }
 }

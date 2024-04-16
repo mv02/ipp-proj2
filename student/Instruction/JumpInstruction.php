@@ -14,6 +14,6 @@ class JumpInstruction extends Instruction
     {
         $label = $env->resolve($this->args[0]);
 
-        $env->jumpTo($label->getValue());
+        $env->jumpTo((string) $label->getValue());
     }
 }

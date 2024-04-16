@@ -23,6 +23,6 @@ class AddInstruction extends Instruction
             throw new OperandTypeError($this);
         }
 
-        $env->set($destArg->getName(), $destArg->getFrame(), DataType::INT, $a->getValue() + $b->getValue());
+        $env->set($destArg->getName(), $destArg->getFrame(), DataType::INT, (int) $a->getValue() + (int) $b->getValue());
     }
 }

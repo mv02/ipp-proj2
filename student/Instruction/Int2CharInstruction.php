@@ -19,7 +19,7 @@ class Int2CharInstruction extends Instruction
 
         $ord = $env->resolve($this->args[1]);
 
-        $ordValue = $ord->getValue();
+        $ordValue = (int) $ord->getValue();
 
         if ($ord->getType() !== DataType::INT) {
             throw new OperandTypeError($this);
@@ -27,7 +27,7 @@ class Int2CharInstruction extends Instruction
 
         $char = mb_chr($ordValue);
 
-        if ($char === false) {
+        if (!$char) {
             throw new StringOperationError($this, "Invalid ordinal value");
         }
 
