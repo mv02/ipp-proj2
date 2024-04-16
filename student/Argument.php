@@ -16,7 +16,7 @@ class Argument
     /** @var string Name if the argument is a variable. */
     private string $name;
     /** @var Symbol Symbol representing a non-variable. */
-    private Symbol $constant;
+    private Symbol $symbol;
 
     /**
      * @param string $value Inner text of the DOM node.
@@ -31,7 +31,7 @@ class Argument
         if ($constType !== null) {
             // The argument is a constant
             $this->type = ArgType::CONST;
-            $this->constant = new Symbol($constType, $this->value);
+            $this->symbol = new Symbol($constType, $this->value);
         } else {
             // The argument is a label, type or variable
             try {
@@ -39,7 +39,7 @@ class Argument
             } catch (ValueError $e) {
                 throw new InvalidSourceStructure("Unknown argument type: " . $type);
             }
-            $this->constant = new Symbol(DataType::STRING, $this->value);
+            $this->symbol = new Symbol(DataType::STRING, $this->value);
         }
 
         if ($this->type == ArgType::VAR) {
@@ -58,9 +58,9 @@ class Argument
      *
      * @return Symbol
      */
-    public function getConstantSymbol(): Symbol
+    public function getSymbol(): Symbol
     {
-        return $this->constant;
+        return $this->symbol;
     }
 
     /**

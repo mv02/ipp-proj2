@@ -14,8 +14,8 @@ class WriteInstruction extends Instruction
     {
         $arg = $this->args[0];
 
-        $symb = $env->resolve($arg);
+        $symbol = $env->resolve($arg);
 
-        $env->write($symb);
+        $env->write($symbol);
     }
 }

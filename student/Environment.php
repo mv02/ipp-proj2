@@ -158,7 +158,7 @@ class Environment
         }
 
         // The argument is a constant, label or type -- return the symbol object
-        return $arg->getConstantSymbol();
+        return $arg->getSymbol();
     }
 
     /**
@@ -208,18 +208,18 @@ class Environment
     /**
      * Write value of given symbol to standard output.
      *
-     * @param Symbol $symb The symbol to output.
+     * @param Symbol $symbol The symbol to output.
      */
-    public function write(Symbol $symb): void
+    public function write(Symbol $symbol): void
     {
-        $type = $symb->getType();
+        $type = $symbol->getType();
 
         if ($type === DataType::BOOL) {
-            $this->writer->writeString($symb->getValue() ? "true" : "false");
+            $this->writer->writeString($symbol->getValue() ? "true" : "false");
         } elseif ($type === DataType::NIL) {
             $this->writer->writeString("");
         } else {
-            $str = (string) $symb->getValue();
+            $str = (string) $symbol->getValue();
 
             // Escape sequences
             $str = preg_replace_callback("/\\\\[0-9]{3}/", function($matches) {
