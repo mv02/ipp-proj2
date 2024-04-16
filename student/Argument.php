@@ -7,10 +7,10 @@ use ValueError;
 
 class Argument
 {
-    /** @var string Raw value of the argument. */
-    private string $value;
     /** @var ArgType Type of the argument. */
     private ArgType $type;
+    /** @var string Raw value of the argument. */
+    private string $value;
     /** @var string Frame type if the argument is a variable. */
     private string $frame;
     /** @var string Name if the argument is a variable. */
@@ -54,13 +54,13 @@ class Argument
     }
 
     /**
-     * Get symbol representing a non-variable.
+     * Get the argument type.
      *
-     * @return Symbol
+     * @return ArgType
      */
-    public function getSymbol(): Symbol
+    public function getType(): ArgType
     {
-        return $this->symbol;
+        return $this->type;
     }
 
     /**
@@ -71,16 +71,6 @@ class Argument
     public function getValue(): string
     {
         return $this->value;
-    }
-
-    /**
-     * Get the argument type.
-     *
-     * @return ArgType
-     */
-    public function getType(): ArgType
-    {
-        return $this->type;
     }
 
     /**
@@ -101,5 +91,15 @@ class Argument
     public function getName(): string
     {
         return $this->name;
+    }
+
+    /**
+     * Get symbol representing a non-variable.
+     *
+     * @return Symbol
+     */
+    public function getSymbol(): Symbol
+    {
+        return $this->symbol;
     }
 }
