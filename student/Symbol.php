@@ -4,9 +4,15 @@ namespace IPP\Student;
 
 class Symbol
 {
+    /** @var DataType */
     protected DataType $type;
+    /** @var int|bool|string|null */
     protected mixed $value;
 
+    /**
+     * @param DataType $type
+     * @param int|bool|string|null $value
+     */
     public function __construct(DataType $type = DataType::NONE, mixed $value = null)
     {
         $this->type = $type;
@@ -26,11 +32,21 @@ class Symbol
         }
     }
 
+    /**
+     * Get symbol data type.
+     *
+     * @return DataType
+     */
     public function getType(): DataType
     {
         return $this->type;
     }
 
+    /**
+     * Get symbol data type in string representation.
+     *
+     * @return string
+     */
     public function getTypeString(): string
     {
         switch ($this->type) {
@@ -47,6 +63,11 @@ class Symbol
         }
     }
 
+    /**
+     * Get symbol value.
+     *
+     * @return int|bool|string|null
+     */
     public function getValue(): mixed
     {
         switch ($this->type) {

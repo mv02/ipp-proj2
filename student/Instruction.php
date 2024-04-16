@@ -7,13 +7,25 @@ use IPP\Student\Exception\SemanticError;
 
 abstract class Instruction
 {
+    /** @var int */
     private int $order;
+    /** @var string */
     private string $opcode;
+    /** @var Argument[] */
     protected array $args = [];
+    /** @var ArgType[] */
     protected array $expectedArgs = [];
 
+    /**
+     * Execute the instruction.
+     *
+     * @param Environment $env Current runtime environment.
+     */
     abstract public function execute(Environment $env): void;
 
+    /**
+     * @param \DOMNode $node The DOM node to parse instruction from.
+     */
     public function __construct(\DOMNode $node)
     {
         $this->order = $node->attributes["order"]->nodeValue;
@@ -22,6 +34,13 @@ abstract class Instruction
         $this->validateArgs();
     }
 
+    /**
+     * Parse instruction arguments from children of given node.
+     *
+     * @param \DOMNode $node The DOM node to parse arguments from.
+     *
+     * @throws InvalidSourceStructure if argument elements are not valid.
+     */
     private function parseArgs(\DOMNode $node): void
     {
         foreach ($node->childNodes as $attr) {
@@ -65,6 +84,11 @@ abstract class Instruction
         }
     }
 
+    /**
+     * Validate count and types of parsed arguments.
+     *
+     * @throws InvalidSourceStructure if unexpected count or types of arguments were given.
+     */
     private function validateArgs(): void
     {
         if (count($this->args) != count($this->expectedArgs)) {
@@ -90,11 +114,21 @@ abstract class Instruction
         }
     }
 
+    /**
+     * Get instruction order.
+     *
+     * @return int
+     */
     public function getOrder(): int
     {
         return $this->order;
     }
 
+    /**
+     * Get instruction opcode.
+     *
+     * @return string
+     */
     public function getOpcode(): string
     {
         return $this->opcode;

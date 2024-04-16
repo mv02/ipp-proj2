@@ -7,6 +7,13 @@ use IPP\Student\Instruction;
 
 class InstructionFactory
 {
+    /**
+     * Create an instruction from given DOM node.
+     *
+     * @throws InvalidSourceStructure if the node has an invalid or unknown opcode.
+     *
+     * @return Instruction The newly created instruction instance.
+     */
     public static function create(\DOMNode $node): Instruction
     {
         $opcode = strtoupper($node->attributes["opcode"]->nodeValue);
