@@ -5,6 +5,7 @@ namespace IPP\Student\Instruction;
 use IPP\Student\ArgType;
 use IPP\Student\Environment;
 use IPP\Student\Instruction;
+use IPP\Student\Symbol;
 
 class PushSInstruction extends Instruction
 {
@@ -12,7 +13,8 @@ class PushSInstruction extends Instruction
 
     public function execute(Environment $env): void
     {
-        $symbol = $env->resolve($this->args[0]);
+        $src = $env->resolve($this->args[0]);
+        $symbol = new Symbol($src->getType(), $src->getValue());
 
         $env->getDataStack()->push($symbol);
     }
